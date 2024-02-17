@@ -1,6 +1,16 @@
 
 import os
 import hashlib
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEvent, FileSystemEventHandler
+
+
+class ManipuladorDeArquivos(FileSystemEventHandler):
+
+    def on_created(self, event: FileSystemEvent) -> None:
+        
+        return super().on_created(event)
+
 
 class Utils():
     def __init__(self) -> None:
@@ -21,5 +31,6 @@ class Utils():
     def lenAudio(self, audio):
         ...
 
-
-
+    def monitoraPasta(path):
+        ...
+    

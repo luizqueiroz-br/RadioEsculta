@@ -1,16 +1,23 @@
 #https://huggingface.co/Systran/faster-whisper-large-v3
-from faster_whisper import WhisperModel
-from fileshelper import Utils
-from mongohelper import mongoHelper
+from Utils.fileshelper import Utils
+from DataBase.mongohelper import mongoHelper
+from Utils.gerenciadorlogger import Logando
 
-model = WhisperModel("large-v3")
-mongo = mongoHelper()
+# mongo = mongoHelper()
 
-utils = Utils()
-for audio in utils.loadPathAudios('./')[:1]:
-    print('dialog, ', audio)
-    segments, info = model.transcribe(audio=audio, language='pt')
-    string_audio = ''
-    for segment in segments:
-        string_audio += "[%.2fs -> %.2fs] %s" % (segment.start, segment.end, segment.text)
-    print(string_audio)
+# utils = Utils()
+# for audio in utils.loadPathAudios('audios/'):
+#     print('dialog, ', audio)
+#     string_audio = ''
+#     for segment in segments:
+#         string_audio += "[%.2fs -> %.2fs] %s | " % (segment.start, segment.end, segment.text)
+#     mongo.insert_data(file_name=audio[0],md5=audio[1],transciption=string_audio)
+#     print(string_audio)
+
+
+def main():
+    log = Logando()
+    log.info('iniciando os motores....')
+
+if __name__ == '__main__':
+    main()
