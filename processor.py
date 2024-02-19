@@ -2,7 +2,9 @@
 from Utils.fileshelper import Utils
 from DataBase.mongohelper import mongoHelper
 from Utils.gerenciadorlogger import Logando
-
+from Utils.fileshelper import ManipuladorDeArquivos
+from watchdog.observers import Observer
+import time
 # mongo = mongoHelper()
 
 # utils = Utils()
@@ -14,10 +16,22 @@ from Utils.gerenciadorlogger import Logando
 #     mongo.insert_data(file_name=audio[0],md5=audio[1],transciption=string_audio)
 #     print(string_audio)
 
+observer = Observer()
 
 def main():
     log = Logando()
     log.info('iniciando os motores....')
+    caminho = "audios/"
+    event_handler = ManipuladorDeArquivos()
+    observer.schedule(event_handler, caminho, recursive=True)
+    observer.start()
+
 
 if __name__ == '__main__':
     main()
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        observer.stop()
+    observer.join()
