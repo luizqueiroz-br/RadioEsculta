@@ -10,12 +10,11 @@ class mongoHelper():
         self.collectionRadioEsculta= self.database['Transcricao']
 
 
-    def insert_data(self, file_name,md5 , transciption) -> None:
+    def insert_data(self, file_name,transciption, send_telegram) -> None:
         data = {
                 "file_name":file_name,
-                "hash_md5":md5,
                 "transcription":transciption,
-                "send_telegram":False,
+                "send_telegram":send_telegram,
                 "timestamp":datetime.datetime.now()
                 }
         

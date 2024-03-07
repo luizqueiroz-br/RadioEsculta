@@ -6,7 +6,7 @@ from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from Utils.gerenciadorlogger import Logando
 from MachineLearning.machinelearning import voiceModel
 import requests
-
+from DataBase.mongohelper import mongoHelper
 class TelegramApi():
     def __init__(self) -> None:
         self.bot_token = '661891149:AAHXbPBwMSR5ZIeySyPs-y4L4PvRvzJvozU'
@@ -35,7 +35,6 @@ class QueQueManeger():
     def __init__(self) -> None:
         self.log = Logando()
         self.log.info('iniciando QueQueManager')
-
 class ManipuladorDeArquivos(FileSystemEventHandler):
 
     def __init__(self) -> None:
@@ -43,6 +42,8 @@ class ManipuladorDeArquivos(FileSystemEventHandler):
         self.log.info('Iniciando ManipuladorDeArquivos')
         self.voice = voiceModel()
         self.telegram = TelegramApi()
+        self.mon = mongoHelper()
+
         super().__init__()
 
     def on_created(self, event: FileSystemEvent) -> None:
@@ -57,7 +58,9 @@ class ManipuladorDeArquivos(FileSystemEventHandler):
             segments, info = self.voice.transcible(audio_path=event.src_path)  
             string_audio = ''    
             for segment in segments:
-                string_audio += "[%.2fs -> %.2fs] %s | " % (segment.start, segment.end, segment.text)
+                string_audio += "%s " % (segment.text)
+            
+            self.mon.insert_data(event.src_path, string_audio, True)
             self.telegram.sendAudio(event.src_path, string_audio)
 
         return super().on_closed(event)
