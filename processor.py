@@ -1,10 +1,12 @@
-#https://huggingface.co/Systran/faster-whisper-large-v3
-from Utils.fileshelper import Utils
-from DataBase.mongohelper import mongoHelper
-from Utils.gerenciadorlogger import Logando
-from Utils.fileshelper import ManipuladorDeArquivos
-from watchdog.observers import Observer
+# https://huggingface.co/Systran/faster-whisper-large-v3
 import time
+
+from watchdog.observers import Observer
+
+from DataBase.mongohelper import mongoHelper
+from Utils.fileshelper import ManipuladorDeArquivos, Utils
+from Utils.gerenciadorlogger import Logando
+
 # mongo = mongoHelper()
 
 # utils = Utils()
@@ -18,16 +20,17 @@ import time
 
 observer = Observer()
 
+
 def main():
     log = Logando()
-    log.info('iniciando os motores....')
+    log.info("iniciando os motores....")
     caminho = "audios/"
     event_handler = ManipuladorDeArquivos()
     observer.schedule(event_handler, caminho, recursive=True)
     observer.start()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
     try:
         while True:
