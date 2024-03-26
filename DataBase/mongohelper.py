@@ -9,6 +9,13 @@ class mongoHelper:
         self.database = self.mongodb["RadioEsculta"]
         self.collectionRadioEsculta = self.database["Transcricao"]
 
+    def get_all_conversation(self):
+        data = []
+        for conve in self.collectionRadioEsculta.find({}):
+            del conve['_id']
+            data.append(conve)
+        return data
+
     def insert_data(self, file_name, transciption, send_telegram) -> None:
         data = {
             "file_name": file_name,
