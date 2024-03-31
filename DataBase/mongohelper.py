@@ -14,9 +14,13 @@ class mongoHelper:
         for conve in self.collectionRadioEsculta.find({}):
             del conve['_id']
             data.append(conve)
-        return data
+        
+        data.reverse()
+        resultados = {"dados": data,
+                    "count": len(data)}
+        return resultados
 
-    def insert_data(self, file_name, transciption, send_telegram) -> None:
+    def insert_data(self, file_name: str, transciption: str, send_telegram: bool) -> None:
         data = {
             "file_name": file_name,
             "transcription": transciption,
