@@ -8,19 +8,32 @@ class mongoHelper:
         self.mongodb = MongoClient("mongodb://localhost:27017/")
         self.database = self.mongodb["RadioEsculta"]
         self.collectionRadioEsculta = self.database["Transcricao"]
+        self.collectionRadioTermos = self.database["TermosMonitorados"]
 
-    def get_all_conversation(self):
+    def get_all_conversation(self, limit, skip):
         data = []
-        for conve in self.collectionRadioEsculta.find({}):
-            del conve['_id']
+        for conve in self.collectionRadioEsculta.find({}).skip(skip).limit(limit):
+            del conve["_id"]
             data.append(conve)
-        
+
         data.reverse()
-        resultados = {"dados": data,
-                    "count": len(data)}
+        resultados = {"dados": data, "count": len(data)}
         return resultados
 
-    def insert_data(self, file_name: str, transciption: str, send_telegram: bool) -> None:
+    def add_termo_monitorado(self, termo, canal_de_envio):
+        data = {
+            "termo": termo,
+            "timestamp": datetime.datetime.now(),
+            "canal_de_envio": canal_de_envio,
+        }
+        return self.collectionRadioTermos.insert_one(data)
+
+    def get_termo_monitorado(self):
+        return self.collectionRadioTermos.find({})
+
+    def insert_data(
+        self, file_name: str, transciption: str, send_telegram: bool
+    ) -> None:
         data = {
             "file_name": file_name,
             "transcription": transciption,

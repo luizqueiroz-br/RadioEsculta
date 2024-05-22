@@ -13,7 +13,7 @@ from Utils.gerenciadorlogger import Logando
 class TelegramApi:
     def __init__(self) -> None:
         self.bot_token = "661891149:AAHXbPBwMSR5ZIeySyPs-y4L4PvRvzJvozU"
-        self.group_id =  "-1002022196761"
+        self.group_id = "-1002022196761"
         # -926984022
 
     def sendAudio(self, path_audio, transcricao):
