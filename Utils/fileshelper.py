@@ -1,40 +1,12 @@
 import hashlib
 import os
-
-import requests
+from Utils.Telegram import TelegramApi
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
 
 from DataBase.mongohelper import mongoHelper
 from MachineLearning.machinelearning import voiceModel
 from Utils.gerenciadorlogger import Logando
-
-
-class TelegramApi:
-    def __init__(self) -> None:
-        self.bot_token = "661891149:AAHXbPBwMSR5ZIeySyPs-y4L4PvRvzJvozU"
-        self.group_id = "-1002022196761"
-        # -926984022
-
-    def sendAudio(self, path_audio, transcricao):
-        url = f"https://api.telegram.org/bot{self.bot_token}/sendAudio"
-
-        try:
-            with open(path_audio, "rb") as f:
-                files = {"audio": f}
-                data = {
-                    "chat_id": self.group_id,
-                    "caption": transcricao,
-                    "parse_mode": "HTML",
-                }
-                response = requests.post(url, files=files, data=data)
-                if response.status_code != 200:
-                    print(f"Erro ao enviar áudio: {response.text}")
-                else:
-                    print(f"Áudio enviado: {path_audio}")
-        except Exception as e:
-            print(f"Erro: {e}")
-
 
 class QueQueManeger:
     def __init__(self) -> None:
@@ -44,7 +16,7 @@ class QueQueManeger:
 
 class ManipuladorDeArquivos(FileSystemEventHandler):
 
-    def __init__(self) -> None:
+    def __init__(self, type_operador) -> None:
         self.log = Logando()
         self.log.info("Iniciando ManipuladorDeArquivos")
         self.voice = voiceModel()

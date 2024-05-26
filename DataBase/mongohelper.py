@@ -15,7 +15,7 @@ class mongoHelper:
         for conve in self.collectionRadioEsculta.find({}).skip(skip).limit(limit):
             del conve["_id"]
             data.append(conve)
-
+        # https://chatgpt.com/g/g-2DQzU5UZl-code-copilot/c/4920d31a-0d0e-47a3-871e-d689ea546062
         data.reverse()
         resultados = {"dados": data, "count": len(data)}
         return resultados

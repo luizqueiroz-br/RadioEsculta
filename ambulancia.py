@@ -13,7 +13,7 @@ observer = Observer()
 def main():
     log = Logando()
     log.info("iniciando os motores....")
-    caminho = "audios/"
+    caminho = "audios/ambulancia"
     event_handler = ManipuladorDeArquivos()
     observer.schedule(event_handler, caminho, recursive=True)
     observer.start()
